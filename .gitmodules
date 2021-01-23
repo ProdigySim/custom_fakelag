@@ -1,0 +1,9 @@
+[submodule "deps/metamod-source"]
+	path = deps/metamod-source
+	url = https://github.com/alliedmodders/metamod-source.git
+[submodule "deps/sourcemod"]
+	path = deps/sourcemod
+	url = https://github.com/alliedmodders/sourcemod.git
+[submodule "deps/hl2sdk-l4d2"]
+	path = deps/hl2sdk-l4d2
+	url = https://github.com/alliedmodders/hl2sdk.git
