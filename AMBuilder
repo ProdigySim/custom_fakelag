@@ -7,8 +7,10 @@ projectName = 'custom_fakelag'
 sourceFiles = [
   'extension.cpp',
   'forwards.cpp',
-  'Net_LagPacket.cpp'
-]
+  'Net_LagPacket.cpp',
+  'CDetour/detours.cpp',
+  'asm/asm.c'
+] + list(map(lambda x : 'libudis86/' + x, ['decode.c', 'itab.c', 'syn-att.c', 'syn-intel.c', 'syn.c', 'udis86.c']))
 
 ###############
 # Make sure to edit PackageScript, which copies your files to their appropriate locations
@@ -22,12 +24,6 @@ if os.path.isfile(os.path.join(builder.currentSourcePath, 'sdk', 'smsdk_ext.cpp'
 else:
   # Use the copy included with SM 1.6 and newer
   project.sources += [os.path.join(Extension.sm_root, 'public', 'smsdk_ext.cpp')]
-
-# Use CDetour code from sourcemod repo.
-project.sources += [os.path.join(Extension.sm_root, 'public/CDetour', 'detours.cpp')]
-# Use asm code from sourcemod repo.
-project.sources += [os.path.join(Extension.sm_root, 'public/asm', 'asm.c')]
-
 
 project.sources += sourceFiles
   
