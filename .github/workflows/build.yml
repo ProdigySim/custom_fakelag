@@ -74,7 +74,7 @@ jobs:
           cd src
           mkdir build
           cd build
-          python ../configure.py --sdks ${{ matrix.sdk }}
+          python ../configure.py --sdks ${{ matrix.sdk }} --mms-path mmsource-1.11
               
       - name: build
         run: |
