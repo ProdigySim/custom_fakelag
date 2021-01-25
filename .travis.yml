@@ -5,7 +5,7 @@ matrix:
   fast_finish: true
   include:
     - os: linux
-      dist: trusty
+      dist: focal
       language: cpp
       compiler: gcc
       addons:
@@ -30,7 +30,7 @@ before_script:
  - python setup.py build
  - python setup.py $AMB
  - cd ..
- - git clone --depth 1 --recurse-submodules -j8 --shallow-submodules -b sdk2013 https://github.com/alliedmodders/hl2sdk.git hl2sdk-sdk2013
+ - git clone --depth 1 --recurse-submodules -j8 --shallow-submodules -b l4d2 https://github.com/alliedmodders/hl2sdk.git hl2sdk-l4d2
  - git clone --depth 1 --recurse-submodules -j8 --shallow-submodules -b 1.11-dev https://github.com/alliedmodders/metamod-source.git mmsource-central
  - git clone --depth 1 --recurse-submodules -j8 --shallow-submodules -b 1.10-dev https://github.com/alliedmodders/sourcemod.git sourcemod-central
  - cd ..
@@ -39,6 +39,6 @@ script:
  - mkdir build
  - cd build
  - cp ../AMBuildScript ../../
- - python2 ../configure.py -s sdk2013 --hl2sdk-root ../assets --sm-path ../assets/sourcemod-central --mms-path ../assets/mmsource-central
+ - python ../configure.py -s l4d2 --hl2sdk-root ../assets --sm-path ../assets/sourcemod-central --mms-path ../assets/mmsource-central
  - ambuild
  - tar czvf ${RELEASE_PKG_FILE} package
