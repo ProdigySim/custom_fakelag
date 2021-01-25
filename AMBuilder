@@ -23,6 +23,10 @@ else:
   # Use the copy included with SM 1.6 and newer
   project.sources += [os.path.join(Extension.sm_root, 'public', 'smsdk_ext.cpp')]
 
+# Use CDetour code from sourcemod repo.
+project.sources += [os.path.join(Extension.sm_root, 'public/CDetour', 'detours.cpp')]
+
+
 project.sources += sourceFiles
   
 for sdk_name in Extension.sdks:
