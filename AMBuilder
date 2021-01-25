@@ -25,6 +25,8 @@ else:
 
 # Use CDetour code from sourcemod repo.
 project.sources += [os.path.join(Extension.sm_root, 'public/CDetour', 'detours.cpp')]
+# Use asm code from sourcemod repo.
+project.sources += [os.path.join(Extension.sm_root, 'public/asm', 'asm.c')]
 
 
 project.sources += sourceFiles
