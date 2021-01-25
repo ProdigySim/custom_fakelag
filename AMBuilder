@@ -1,11 +1,13 @@
 # vim: set sts=2 ts=8 sw=2 tw=99 et ft=python:
 import os, sys
 
-projectName = 'sample'
+projectName = 'custom_fakelag'
 
 # smsdk_ext.cpp will be automatically added later
 sourceFiles = [
   'extension.cpp',
+  'forwards.cpp',
+  'Net_LagPacket.cpp'
 ]
 
 ###############

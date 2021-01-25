@@ -1,11 +1,19 @@
 #include "extension.h"
 #include "forwards.h"
-#include <inetchannel.h>
-#include <tier1/netadr.h>
 #include "Net_LagPacket.h"
 
 IForward* g_fwdLagPacket = NULL;
 CDetour* DLagPacket = NULL;
+
+float getLagPacketMs(netpacket_t* packet)
+{
+	float lagTime = 0.0f;
+	g_fwdLagPacket->PushFloatByRef(&lagTime);
+	g_fwdLagPacket->PushCell(packet->from.GetIP());
+	g_fwdLagPacket->Execute();
+
+	return lagTime;
+}
 
 DETOUR_DECL_STATIC2(NET_LagPacket, bool, bool, newdata, netpacket_t *, packet) 
 {
@@ -44,15 +52,4 @@ void RemoveNetLagPacketDetour()
 		DLagPacket->Destroy();
 		DLagPacket = NULL;
 	}
-}
-
-
-float getLagPacketMs(netpacket_t* packet)
-{
-	float lagTime = 0.0f;
-	g_fwdLagPacket->PushFloatByRef(&lagTime);
-	g_fwdLagPacket->PushCell(packet->from.GetIP());
-	g_fwdLagPacket->Execute();
-
-	return lagTime;
 }

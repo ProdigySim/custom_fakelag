@@ -7,3 +7,7 @@
 [submodule "deps/hl2sdk-l4d2"]
 	path = deps/hl2sdk-l4d2
 	url = https://github.com/alliedmodders/hl2sdk.git
+[submodule "deps/hl2sdk-sdk2013"]
+	path = deps/hl2sdk-sdk2013
+	url = https://github.com/alliedmodders/hl2sdk.git
+	branch = sdk2013

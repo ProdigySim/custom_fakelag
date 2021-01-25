@@ -4,6 +4,6 @@
 
 bool CreateNetLagPacketDetour();
 void RemoveNetLagPacketDetour();
-extern IForward* g_fwdLagPacket = NULL;
+extern IForward* g_fwdLagPacket;
 
 #endif // _INCLUDE_CUSTOM_FAKELAG_FORWARDS_H_

@@ -1,5 +1,4 @@
-#include <inetchannel.h>
-#include <tier1/netadr.h>
+#include "net_structures.h"
 
 // pointer to the `net_time` global variable.
 double* g_pNetTime = NULL;
@@ -7,6 +6,15 @@ double* g_pNetTime = NULL;
 // This is only 3 in L4D2, but it's listed as 5 in VSES 2007 source. Doesn't really hurt to have extra empty slots....
 #define MAX_SOCKETS 6
 static netpacket_t* s_pLagData[MAX_SOCKETS] = { NULL };  // List of lagged packet structures.
+
+
+double getNetTime() {
+	return g_pNetTime == NULL ? 0.0f : *g_pNetTime;
+}
+
+void SetNetTimePtr(double* net_time) {
+	g_pNetTime = net_time;
+}
 
 
 void AddToLagged(netpacket_t* pPacket, float lagTime) {
@@ -80,12 +88,4 @@ bool GetNextPacket(int socket, netpacket_t * destPacket) {
 	memcpy(destPacket->data, pTopPacket->data, pTopPacket->size);
 
 	return true;
-}
-
-void SetNetTimePtr(double* net_time) {
-	g_pNetTime = net_time;
-}
-
-double getNetTime() {
-	return g_pNetTime == NULL ? 0.0f : *g_pNetTime;
 }
