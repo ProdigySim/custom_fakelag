@@ -9,7 +9,7 @@ float getLagPacketMs(netpacket_t* packet)
 {
 	float lagTime = 0.0f;
 	g_fwdLagPacket->PushFloatByRef(&lagTime);
-	g_fwdLagPacket->PushCell(packet->from.GetIP());
+	g_fwdLagPacket->PushCell(packet->from.ip);
 	g_fwdLagPacket->Execute();
 
 	return lagTime;

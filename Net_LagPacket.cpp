@@ -1,3 +1,5 @@
+#include <cstddef>
+#include <cstring>
 #include "net_structures.h"
 
 // pointer to the `net_time` global variable.
