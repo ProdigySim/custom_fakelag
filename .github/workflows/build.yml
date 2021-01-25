@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         platform: [ubuntu-latest, windows-latest]
-        sourcemod_version: [1.10-dev, master]
+        sourcemod_version: [1.10-dev]
         sdk: [l4d2]
     runs-on: ${{ matrix.platform }}
     steps:
