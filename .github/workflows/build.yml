@@ -80,3 +80,9 @@ jobs:
         run: |
           cd src/build
           ambuild
+
+      - name: upload extension artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{ runner.os }}_${{ github.sha }}
+          path: src/build/package/
