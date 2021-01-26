@@ -2,6 +2,9 @@
 #include <cstring>
 #include "net_structures.h"
 
+// uncomment for log statements
+//#include "extension.h"
+
 // pointer to the `net_time` global variable.
 double* g_pNetTime = NULL;
 
@@ -63,6 +66,7 @@ void AddToLagged(netpacket_t* pPacket, float lagTime) {
 }
 
 bool GetNextPacket(int socket, netpacket_t * destPacket) {
+	// g_pSM->LogError(myself, "Read packet opportunity on socket %d @ %f", socket, getNetTime());
 	netpacket_t* pTopPacket = s_pLagData[socket];
 
 	if (!pTopPacket) {
@@ -72,10 +76,12 @@ bool GetNextPacket(int socket, netpacket_t * destPacket) {
 
 	// Is it time to process this packet?
 	if (pTopPacket->received > getNetTime()) {
+		// g_pSM->LogError(myself, "Top packet is not due yet (%f > %f)", pTopPacket->received, getNetTime());
 		return false;
 	}
 
 	// It's time for this packet!
+	// g_pSM->LogError(myself, "It's time for a packet! (%f < %f)", pTopPacket->received, getNetTime());
 
 	// Unlink the top packet from the list. (pop)
 	s_pLagData[socket] = pTopPacket->pNext;
@@ -88,6 +94,10 @@ bool GetNextPacket(int socket, netpacket_t * destPacket) {
 	destPacket->wiresize = pTopPacket->wiresize;
 	destPacket->stream = pTopPacket->stream;
 	memcpy(destPacket->data, pTopPacket->data, pTopPacket->size);
+
+
+	// g_pSM->LogError(myself, "Finished copying packet of size %d from ip %08x", destPacket->received, destPacket->from.ip);
+
 
 	return true;
 }

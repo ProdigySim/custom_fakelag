@@ -25,9 +25,14 @@ DETOUR_DECL_STATIC2(NET_LagPacket, bool, bool, newdata, netpacket_t *, packet)
 	if (newdata) {
 		float lagTime = getLagPacketMs(packet);
 		if (lagTime > 0.0) {
+			// g_pSM->LogError(myself, "Lagging packet on socket %d for %fms", packet->source, lagTime);
 			AddToLagged(packet, lagTime);
 		}
-		// Do we need to zero out the packet? No right?
+		else
+		{
+			// TODO: Flush lagged packets if the lag time is reduced or removed?
+			return true;
+		}
 	}
 
 	return GetNextPacket(packet->source, packet);

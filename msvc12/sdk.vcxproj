@@ -1168,6 +1168,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\CDetour\detours.cpp" />
     <ClCompile Include="..\deps\sourcemod\public\smsdk_ext.cpp" />
     <ClCompile Include="..\extension.cpp" />
     <ClCompile Include="..\forwards.cpp" />
@@ -1179,6 +1180,7 @@
     <ClInclude Include="..\extension.h" />
     <ClInclude Include="..\forwards.h" />
     <ClInclude Include="..\Net_LagPacket.h" />
+    <ClInclude Include="..\net_structures.h" />
     <ClInclude Include="..\smsdk_config.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

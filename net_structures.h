@@ -26,6 +26,12 @@ struct fake_bf_read {
   bool			m_bOverflow;
   bool			m_bAssertOnOverflow;
   const char		*m_pDebugName;
+
+  // These are probably CBitRead on hl2sdk-l4d2. 
+  // Could be different amounts of data here on other SDK versions
+  int m_BitRead0;
+  int m_BitRead1;
+  int m_BitRead2;
 };
 
 // Copied from hl2sdk so we don't have to include all that junk
