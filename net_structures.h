@@ -1,20 +1,12 @@
 #ifndef _CUSTOM_FAKELAG_NET_STRUCTURES_H_
 #define _CUSTOM_FAKELAG_NET_STRUCTURES_H_
+#include <netadr.h>
 
-
-typedef enum
-{ 
-  NA_NULL = 0,
-  NA_LOOPBACK,
-  NA_BROADCAST,
-  NA_IP,
-} netadrtype_t;
-
-typedef struct netadr_s {
-  netadrtype_t	type;
-  unsigned int	ip;
-  unsigned short	port;
-} netadr_t;
+struct dumb_netadr_s {
+	netadrtype_t	type;
+	unsigned char	ip[4];
+	unsigned short	port;
+};
 
 // I don't want to pull in all the bf_read code, since it has compile issues, and we ignore it.
 struct fake_bf_read {
@@ -35,7 +27,7 @@ struct fake_bf_read {
 };
 
 // Copied from hl2sdk so we don't have to include all that junk
-typedef struct netpacket_s 
+typedef struct _netpacket_s 
 {
   netadr_t		from;		// sender IP
   int				source;		// received source 
@@ -45,7 +37,17 @@ typedef struct netpacket_s
   int				size;		// size in bytes
   int				wiresize;   // size in bytes before decompression
   bool			stream;		// was send as stream
-  struct netpacket_s *pNext;	// for internal use, should be NULL in public
-} netpacket_t;
+  struct _netpacket_s *pNext;	// for internal use, should be NULL in public
+
+  static const _netpacket_s & clone(const _netpacket_s& src)
+  {
+	  struct _netpacket_s dst(src);
+	  dst.data = new unsigned char[src.size];
+	  // TODO: Pick a different memcpy?
+	  memcpy(dst.data, src.data, src.size);
+	  dst.pNext = NULL;
+	  return std::move(dst);
+  }
+} _netpacket_t;
 
 #endif // _CUSTOM_FAKELAG_NET_STRUCTURES_H_

@@ -55,14 +55,17 @@ bool CustomFakelag::SDK_OnLoad(char* error, size_t maxlen, bool late)
 	double* pNetTime = NULL;
 	if (!g_pGameConf->GetAddress("net_time", reinterpret_cast<void**>(&pNetTime))) {
 		ke::SafeSprintf(error, maxlen, "Could not find net_time address in memory");
+		return false;
 	}
-	SetNetTimePtr(pNetTime);
+
+	m_LagManager = new PlayerLagManager(engine);
 
 	// Initialize Detour System.
 	CDetourManager::Init(g_pSM->GetScriptingEngine(), g_pGameConf);
 
+
 	// Detour NET_LagPacket()
-	if (!CreateNetLagPacketDetour()) {
+	if (!LagDetour_Init(m_LagManager, pNetTime)) {
 		ke::SafeSprintf(error, maxlen, "Could not detour Net_LagPacket.");
 		return false;
 	}
@@ -71,12 +74,15 @@ bool CustomFakelag::SDK_OnLoad(char* error, size_t maxlen, bool late)
 
 void CustomFakelag::SDK_OnAllLoaded()
 {
-	g_fwdLagPacket = forwards->CreateForward("CustomLag_OnLagPacket", ET_Ignore, 2, NULL, Param_FloatByRef, Param_Cell);
 }
 
 void CustomFakelag::SDK_OnUnload() {
-	forwards->ReleaseForward(g_fwdLagPacket);
-	RemoveNetLagPacketDetour();
+	LagDetour_Shutdown();
+	if (m_LagManager)
+	{
+		delete m_LagManager;
+	}
+	m_LagManager = NULL;
 }
 
 SMEXT_LINK(&g_Sample);

@@ -8,6 +8,7 @@ sourceFiles = [
   'extension.cpp',
   'forwards.cpp',
   'Net_LagPacket.cpp',
+  'PlayerLagManager.cpp',
   'CDetour/detours.cpp',
   'asm/asm.c'
 ] + list(map(lambda x : 'libudis86/' + x, ['decode.c', 'itab.c', 'syn-att.c', 'syn-intel.c', 'syn.c', 'udis86.c']))
