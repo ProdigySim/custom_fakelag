@@ -8,7 +8,7 @@
 
 void LagSystem::LagPacket(_netpacket_t* pPacket, float lagTime)
 {
-	auto newPacket = _netpacket_t::clone(*pPacket);
+	auto newPacket = _netpacket_t(*pPacket);
 
 	// CUSTOM!!!
 	// Update received time to be the new time we want to read the packet

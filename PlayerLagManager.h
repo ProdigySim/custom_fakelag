@@ -1,4 +1,5 @@
 #pragma once
+#include <mathlib.h>
 #include <eiface.h>
 #include <inetchannel.h>
 #include <amtl/am-hashmap.h>

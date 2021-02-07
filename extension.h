@@ -37,6 +37,7 @@
  * @brief Sample extension code header.
  */
 
+#include <mathlib.h>
 #include "smsdk_ext.h"
 #include "CDetour/detours.h"
 #include "PlayerLagManager.h"

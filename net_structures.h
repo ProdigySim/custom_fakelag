@@ -39,14 +39,18 @@ typedef struct _netpacket_s
   bool			stream;		// was send as stream
   struct _netpacket_s *pNext;	// for internal use, should be NULL in public
 
-  static const _netpacket_s & clone(const _netpacket_s& src)
+  _netpacket_s(const _netpacket_s& src) :
+    from(src.from),
+    source(src.source),
+    message(src.message),
+    size(src.size),
+    wiresize(src.wiresize),
+    stream(src.stream),
+    pNext(NULL)
   {
-	  struct _netpacket_s dst(src);
-	  dst.data = new unsigned char[src.size];
+	  data = new unsigned char[src.size];
 	  // TODO: Pick a different memcpy?
-	  memcpy(dst.data, src.data, src.size);
-	  dst.pNext = NULL;
-	  return std::move(dst);
+	  memcpy(data, src.data, src.size);
   }
 } _netpacket_t;
 
