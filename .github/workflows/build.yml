@@ -72,7 +72,7 @@ jobs:
       - name: configure ambuild
         env:
           CC: clang
-          CCX: clang++ 
+          CXX: clang++ 
         run: |
           cd src
           mkdir build
