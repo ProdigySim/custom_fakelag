@@ -70,6 +70,9 @@ jobs:
           arch: x86
       
       - name: configure ambuild
+        env:
+          CC: clang
+          CCX: clang++ 
         run: |
           cd src
           mkdir build
