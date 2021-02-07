@@ -9,12 +9,6 @@ jobs:
         platform: [ubuntu-latest, windows-latest]
         sourcemod_version: [1.10-dev]
         sdk: [l4d2]
-        include:
-        - os: ubuntu-latest
-          COMPILER_EVAL: CC=clang && CXX=clang++
-
-        - os: windows-latest
-          COMPILER_EVAL: ""
     runs-on: ${{ matrix.platform }}
     steps:
       - name: checkout repo
@@ -75,13 +69,11 @@ jobs:
         with:
           arch: x86
       
-      - name: setup env
-        run: eval ${{ matrix.COMPILER_EVAL }}
+      - name: setup linux env
+        if: runner.os == 'Linux'
+        run: CC=clang && CXX=clang++
 
       - name: configure ambuild
-        env:
-          CC: clang
-          CXX: clang++ 
         run: |
           cd src
           mkdir build
