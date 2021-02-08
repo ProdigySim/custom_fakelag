@@ -18,7 +18,7 @@ jobs:
           sdk: l4d2
           cc: ""
           cxx: ""
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
