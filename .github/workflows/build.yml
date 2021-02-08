@@ -78,10 +78,14 @@ jobs:
         with:
           arch: x86
 
+      - name: set cc and cxx variables
+        if: runner.os == 'Linux'
+        uses: allenevans/set-env@v2.0.0
+        with:
+          CC: clang
+          CXX: clang++
+
       - name: configure ambuild
-        env:
-          CC: ${{ matrix.cc }}
-          CXX: ${{ matrix.cxx }}
         run: |
           cd src
           mkdir build
