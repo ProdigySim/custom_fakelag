@@ -6,15 +6,16 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [ubuntu-latest, windows-latest]
-        sourcemod_version: [1.10-dev]
-        sdk: [l4d2]
         include:
         - os: ubuntu-latest
+          sourcemod_version: 1.10-dev
+          sdk: l4d2
           cc: clang
           cxx: clang++
 
         - os: windows-latest
+          sourcemod_version: 1.10-dev
+          sdk: l4d2
           cc: ""
           cxx: ""
     runs-on: ${{ matrix.platform }}
