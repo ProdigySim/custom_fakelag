@@ -9,6 +9,14 @@ jobs:
         platform: [ubuntu-latest, windows-latest]
         sourcemod_version: [1.10-dev]
         sdk: [l4d2]
+        include:
+        - os: ubuntu-latest
+          CC: clang
+          CXX: clang++
+
+        - os: windows-latest
+          CC: ""
+          CXX: ""
     runs-on: ${{ matrix.platform }}
     steps:
       - name: checkout repo
@@ -68,14 +76,11 @@ jobs:
         if: runner.os == 'Windows'
         with:
           arch: x86
-      
-      - name: setup linux env
-        if: runner.os == 'Linux'
-        run: |
-          export CC=clang
-          export CXX=clang++
 
       - name: configure ambuild
+        env:
+          CC: ${{ matrix.CC }}
+          CXX: ${{ matrix.CXX }}
         run: |
           cd src
           mkdir build
