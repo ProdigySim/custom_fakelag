@@ -11,12 +11,12 @@ jobs:
         sdk: [l4d2]
         include:
         - os: ubuntu-latest
-          CC: clang
-          CXX: clang++
+          cc: clang
+          cxx: clang++
 
         - os: windows-latest
-          CC: ""
-          CXX: ""
+          cc: ""
+          cxx: ""
     runs-on: ${{ matrix.platform }}
     steps:
       - name: checkout repo
@@ -79,8 +79,8 @@ jobs:
 
       - name: configure ambuild
         env:
-          CC: ${{ matrix.CC }}
-          CXX: ${{ matrix.CXX }}
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
         run: |
           cd src
           mkdir build
