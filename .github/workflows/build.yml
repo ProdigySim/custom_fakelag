@@ -71,7 +71,9 @@ jobs:
       
       - name: setup linux env
         if: runner.os == 'Linux'
-        run: CC=clang && CXX=clang++
+        run: |
+          export CC=clang
+          export CXX=clang++
 
       - name: configure ambuild
         run: |
