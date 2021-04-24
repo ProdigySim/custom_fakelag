@@ -103,6 +103,7 @@ float CustomFakelag::GetPlayerLatency(int client)
 	{
 		return m_LagManager->GetPlayerLag(client);
 	}
+	return 0.0f;
 }
 
 // native void CFakeLag_SetPlayerLatency(int client, float lagTime)
