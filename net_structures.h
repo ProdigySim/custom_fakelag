@@ -2,11 +2,12 @@
 #define _CUSTOM_FAKELAG_NET_STRUCTURES_H_
 #include <netadr.h>
 
-struct dumb_netadr_s {
+typedef struct dumb_netadr_s {
   netadrtype_t	type;
   unsigned char	ip[4];
   unsigned short	port;
-};
+} dumb_netadr_t;
+
 
 // I don't want to pull in all the bf_read code, since it has compile issues, and we ignore it.
 struct fake_bf_read {
@@ -33,7 +34,7 @@ typedef struct _netpacket_s
   // This netadr_t is INCORRECT!!!!!
   // can I use a custom one instead???
   // !!!!!!!
-  netadr_t		from;		// sender IP
+  dumb_netadr_t		from;		// sender IP
   int				source;		// received source 
   double			received;	// received time
   unsigned char	*data;		// pointer to raw packet data

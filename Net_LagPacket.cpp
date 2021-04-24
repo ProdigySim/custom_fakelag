@@ -39,7 +39,7 @@ bool LagSystem::GetNextPacket(int socket, _netpacket_t* destPacket)
 
 	// Copy the packet contents to the net packet.
 	//memcpy(&destPacket->from, &topPacket.from, sizeof(netadr_t));
-	destPacket->from.ip = topPacket.from.ip;
+	destPacket->from = topPacket.from;
 	destPacket->pNext = NULL;
 	destPacket->received = topPacket.received; // Custom: Keep same fake received time, instead of taking current net_time.
 	destPacket->size = topPacket.size;
