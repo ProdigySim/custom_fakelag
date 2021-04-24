@@ -27,12 +27,12 @@ bool LagSystem::GetNextPacket(int socket, _netpacket_t* destPacket)
 
 	// Is it time to process this packet?
 	if (packetQueue->peek().received > GetNetTime()) {
-		g_pSM->LogError(myself, "Top packet is not due yet (%f > %f)", packetQueue->peek().received, GetNetTime());
+		//g_pSM->LogError(myself, "Top packet is not due yet (%f > %f)", packetQueue->peek().received, GetNetTime());
 		return false;
 	}
 
 	// It's time for this packet!
-	g_pSM->LogError(myself, "It's time for a packet! (%f < %f)", packetQueue->peek().received, GetNetTime());
+	//g_pSM->LogError(myself, "It's time for a packet! (%f < %f)", packetQueue->peek().received, GetNetTime());
 
 	// Unlink the top packet from the list. (pop)
 	const _netpacket_t topPacket = packetQueue->popCopy();

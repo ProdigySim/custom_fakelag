@@ -24,7 +24,7 @@ DETOUR_DECL_STATIC2(NET_LagPacket, bool, bool, newdata, _netpacket_t*, packet)
 	if (newdata) {
 		const float lagTime = getLagPacketMs(*packet);
 		if (lagTime > 0.0) {
-			g_pSM->LogError(myself, "Lagging packet on socket %d for %fms", packet->source, lagTime);
+			// g_pSM->LogError(myself, "Lagging packet on socket %d for %fms", packet->source, lagTime);
 			s_LagSystem->LagPacket(packet, lagTime);
 		}
 		else
