@@ -1,7 +1,7 @@
 #include "extension.h"
-#include "forwards.h"
+#include "NET_LagPacket_Detour.h"
 #include "PlayerLagManager.h"
-#include "Net_LagPacket.h"
+#include "LagSystem.h"
 
 IForward* g_fwdLagPacket = NULL;
 CDetour* DLagPacket = NULL;

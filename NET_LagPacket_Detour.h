@@ -1,5 +1,5 @@
-#ifndef _INCLUDE_CUSTOM_FAKELAG_FORWARDS_H_
-#define _INCLUDE_CUSTOM_FAKELAG_FORWARDS_H_
+#ifndef _INCLUDE_CUSTOM_FAKELAG_LAGPACKET_DETOUR_H_
+#define _INCLUDE_CUSTOM_FAKELAG_LAGPACKET_DETOUR_H_
 
 #include "PlayerLagManager.h"
 
@@ -8,4 +8,4 @@
 bool LagDetour_Init(const PlayerLagManager* lagManager, const double* pNetTime);
 void LagDetour_Shutdown();
 
-#endif // _INCLUDE_CUSTOM_FAKELAG_FORWARDS_H_
+#endif // _INCLUDE_CUSTOM_FAKELAG_LAGPACKET_DETOUR_H_

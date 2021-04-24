@@ -1171,16 +1171,16 @@
     <ClCompile Include="..\CDetour\detours.cpp" />
     <ClCompile Include="..\deps\sourcemod\public\smsdk_ext.cpp" />
     <ClCompile Include="..\extension.cpp" />
-    <ClCompile Include="..\forwards.cpp" />
-    <ClCompile Include="..\Net_LagPacket.cpp" />
+    <ClCompile Include="..\NET_LagPacket_Detour.cpp" />
+    <ClCompile Include="..\LagSystem.cpp" />
     <ClCompile Include="..\PlayerLagManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\deps\sourcemod\public\amtl\amtl\am-string.h" />
     <ClInclude Include="..\deps\sourcemod\public\smsdk_ext.h" />
     <ClInclude Include="..\extension.h" />
-    <ClInclude Include="..\forwards.h" />
-    <ClInclude Include="..\Net_LagPacket.h" />
+    <ClInclude Include="..\NET_LagPacket_Detour.h" />
+    <ClInclude Include="..\LagSystem.h" />
     <ClInclude Include="..\net_structures.h" />
     <ClInclude Include="..\PlayerLagManager.h" />
     <ClInclude Include="..\smsdk_config.h" />

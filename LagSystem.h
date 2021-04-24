@@ -1,5 +1,5 @@
-#ifndef _CUSTOM_FAKELAG_NET_LAGPACKET_H_
-#define _CUSTOM_FAKELAG_NET_LAGPACKET_H_
+#ifndef _CUSTOM_FAKELAG_LAG_SYSTEM_H_
+#define _CUSTOM_FAKELAG_LAG_SYSTEM_H_
 #include <amtl/am-priority-queue.h>
 #include "net_structures.h"
 
@@ -26,4 +26,4 @@ public:
 	bool GetNextPacket(int socket, _netpacket_t* destPacket);
 };
 
-#endif // _CUSTOM_FAKELAG_NET_LAGPACKET_H_
+#endif // _CUSTOM_FAKELAG_LAG_SYSTEM_H_

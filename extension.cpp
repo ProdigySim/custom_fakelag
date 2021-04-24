@@ -30,8 +30,8 @@
  */
 
 #include "extension.h"
-#include "forwards.h"
-#include "Net_LagPacket.h"
+#include "NET_LagPacket_Detour.h"
+#include "LagSystem.h"
 
 CustomFakelag g_Sample;		/**< Global singleton for extension's main interface */
 extern sp_nativeinfo_t g_CFakeLagNatives[];

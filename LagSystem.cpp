@@ -1,6 +1,6 @@
 #include <cstddef>
 #include <cstring>
-#include "Net_LagPacket.h"
+#include "LagSystem.h"
 
 // uncomment for log statements
 #include "extension.h"
