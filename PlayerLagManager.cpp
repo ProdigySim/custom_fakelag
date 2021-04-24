@@ -1,7 +1,7 @@
 #include "PlayerLagManager.h"
 #include "extension.h"
 
-const netadr_t& PlayerLagManager::GetClientNetAdr(int client) const
+const dumb_netadr_t& PlayerLagManager::GetClientNetAdr(int client) const
 {
 	INetChannel* pNetChan = static_cast<INetChannel*>(m_pEngine->GetPlayerNetInfo(client));
 	return pNetChan->GetRemoteAddress();
@@ -25,7 +25,7 @@ float PlayerLagManager::GetPlayerLag(int client) const
 	return GetPlayerLag(netadr);
 }
 
-float PlayerLagManager::GetPlayerLag(const netadr_t& netadr) const
+float PlayerLagManager::GetPlayerLag(const dumb_netadr_t& netadr) const
 {
 	auto i = m_LagTimes.find(netadr);
 	if (!i.found())
