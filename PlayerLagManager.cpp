@@ -4,7 +4,7 @@
 const dumb_netadr_t& PlayerLagManager::GetClientNetAdr(int client) const
 {
 	INetChannel* pNetChan = static_cast<INetChannel*>(m_pEngine->GetPlayerNetInfo(client));
-	return pNetChan->GetRemoteAddress();
+	return reinterpret_cast<const dumb_netadr_t&>(pNetChan->GetRemoteAddress());
 }
 
 void PlayerLagManager::SetPlayerLag(int client, float lagTime)
