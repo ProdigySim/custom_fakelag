@@ -6,8 +6,9 @@ projectName = 'custom_fakelag'
 # smsdk_ext.cpp will be automatically added later
 sourceFiles = [
   'extension.cpp',
-  'forwards.cpp',
-  'Net_LagPacket.cpp',
+  'NET_LagPacket_Detour.cpp',
+  'LagSystem.cpp',
+  'PlayerLagManager.cpp',
   'CDetour/detours.cpp',
   'asm/asm.c'
 ] + list(map(lambda x : 'libudis86/' + x, ['decode.c', 'itab.c', 'syn-att.c', 'syn-intel.c', 'syn.c', 'udis86.c']))

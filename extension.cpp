@@ -30,12 +30,11 @@
  */
 
 #include "extension.h"
-#include "forwards.h"
-#include "Net_LagPacket.h"
+#include "NET_LagPacket_Detour.h"
+#include "LagSystem.h"
 
 CustomFakelag g_Sample;		/**< Global singleton for extension's main interface */
-
-
+extern sp_nativeinfo_t g_CFakeLagNatives[];
 IGameConfig* g_pGameConf = NULL;
 
 bool CustomFakelag::SDK_OnLoad(char* error, size_t maxlen, bool late) 
@@ -55,28 +54,97 @@ bool CustomFakelag::SDK_OnLoad(char* error, size_t maxlen, bool late)
 	double* pNetTime = NULL;
 	if (!g_pGameConf->GetAddress("net_time", reinterpret_cast<void**>(&pNetTime))) {
 		ke::SafeSprintf(error, maxlen, "Could not find net_time address in memory");
+		return false;
 	}
-	SetNetTimePtr(pNetTime);
+
+	m_LagManager = new PlayerLagManager(engine);
 
 	// Initialize Detour System.
 	CDetourManager::Init(g_pSM->GetScriptingEngine(), g_pGameConf);
 
+
 	// Detour NET_LagPacket()
-	if (!CreateNetLagPacketDetour()) {
+	if (!LagDetour_Init(m_LagManager, pNetTime)) {
 		ke::SafeSprintf(error, maxlen, "Could not detour Net_LagPacket.");
 		return false;
 	}
+
+	
+	sharesys->AddNatives(myself, g_CFakeLagNatives);
+	sharesys->RegisterLibrary(myself, "custom_fakelag");
 	return true;
 }
 
 void CustomFakelag::SDK_OnAllLoaded()
 {
-	g_fwdLagPacket = forwards->CreateForward("CustomLag_OnLagPacket", ET_Ignore, 2, NULL, Param_FloatByRef, Param_Cell);
 }
 
 void CustomFakelag::SDK_OnUnload() {
-	forwards->ReleaseForward(g_fwdLagPacket);
-	RemoveNetLagPacketDetour();
+	LagDetour_Shutdown();
+	if (m_LagManager)
+	{
+		delete m_LagManager;
+	}
+	m_LagManager = NULL;
 }
+
+
+void CustomFakelag::SetPlayerLatency(int client, float lagTime)
+{
+	if (m_LagManager != NULL)
+	{
+		m_LagManager->SetPlayerLag(client, lagTime);
+	}
+}
+
+float CustomFakelag::GetPlayerLatency(int client)
+{
+	if(m_LagManager != NULL)
+	{
+		return m_LagManager->GetPlayerLag(client);
+	}
+	return 0.0f;
+}
+
+// native void CFakeLag_SetPlayerLatency(int client, float lagTime)
+cell_t CFakeLag_SetPlayerLatency(IPluginContext *pContext, const cell_t *params)
+{
+	int client = params[1];
+	float lagTime = sp_ctof(params[2]);
+	auto player = playerhelpers->GetGamePlayer(client);
+	if (player == NULL) {
+		return pContext->ThrowNativeError("Client index %d is not valid", client);
+	}
+
+	if(player->IsFakeClient())
+	{
+		return pContext->ThrowNativeError("Client index %d is a fake client and can't be lagged.", client);
+	}
+	g_Sample.SetPlayerLatency(client, lagTime);
+	return 1;
+
+}// native void CFakeLag_SetPlayerLatency(int client, float lagTime)
+cell_t CFakeLag_GetPlayerLatency(IPluginContext *pContext, const cell_t *params)
+{
+	int client = params[1];
+	auto player = playerhelpers->GetGamePlayer(client);
+	if (player == NULL) {
+		return pContext->ThrowNativeError("Client index %d is not valid", client);
+	}
+
+	if(player->IsFakeClient())
+	{
+		return pContext->ThrowNativeError("Client index %d is a fake client and can't be lagged.", client);
+	}
+	return sp_ftoc(g_Sample.GetPlayerLatency(client));
+}
+
+
+sp_nativeinfo_t g_CFakeLagNatives[] = 
+{
+	{"CFakeLag_SetPlayerLatency",			CFakeLag_SetPlayerLatency},
+	{"CFakeLag_GetPlayerLatency",			CFakeLag_GetPlayerLatency},
+	{NULL,							NULL}
+};
 
 SMEXT_LINK(&g_Sample);

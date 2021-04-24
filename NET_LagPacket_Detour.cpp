@@ -1,21 +1,20 @@
 #include "extension.h"
-#include "forwards.h"
-#include "Net_LagPacket.h"
+#include "NET_LagPacket_Detour.h"
+#include "PlayerLagManager.h"
+#include "LagSystem.h"
 
 IForward* g_fwdLagPacket = NULL;
 CDetour* DLagPacket = NULL;
 
-float getLagPacketMs(netpacket_t* packet)
-{
-	float lagTime = 0.0f;
-	g_fwdLagPacket->PushFloatByRef(&lagTime);
-	g_fwdLagPacket->PushCell(packet->from.ip);
-	g_fwdLagPacket->Execute();
+static const PlayerLagManager* s_LagManager;
+static LagSystem* s_LagSystem;
 
-	return lagTime;
+float getLagPacketMs(const _netpacket_t & packet)
+{
+	return s_LagManager->GetPlayerLag(packet.from);
 }
 
-DETOUR_DECL_STATIC2(NET_LagPacket, bool, bool, newdata, netpacket_t *, packet) 
+DETOUR_DECL_STATIC2(NET_LagPacket, bool, bool, newdata, _netpacket_t*, packet)
 {
 
 	// If "newdata" is true, packet points to a new packet of real data (which we could potentially lag)
@@ -23,10 +22,10 @@ DETOUR_DECL_STATIC2(NET_LagPacket, bool, bool, newdata, netpacket_t *, packet)
 	// Returning true means we assert that "packet" is full of a consumable network packet.
 	// Returning false means the consumer should ignore packet, there is no packet to consume yet.
 	if (newdata) {
-		float lagTime = getLagPacketMs(packet);
+		const float lagTime = getLagPacketMs(*packet);
 		if (lagTime > 0.0) {
 			// g_pSM->LogError(myself, "Lagging packet on socket %d for %fms", packet->source, lagTime);
-			AddToLagged(packet, lagTime);
+			s_LagSystem->LagPacket(packet, lagTime);
 		}
 		else
 		{
@@ -35,7 +34,7 @@ DETOUR_DECL_STATIC2(NET_LagPacket, bool, bool, newdata, netpacket_t *, packet)
 		}
 	}
 
-	return GetNextPacket(packet->source, packet);
+	return s_LagSystem->GetNextPacket(packet->source, packet);
 }
 
 bool CreateNetLagPacketDetour()
@@ -57,4 +56,27 @@ void RemoveNetLagPacketDetour()
 		DLagPacket->Destroy();
 		DLagPacket = NULL;
 	}
+}
+
+
+// lagManager: A Lag Manager instance to look up player lag times
+// pNetTime: Pointer to the engine "net_time" variable
+bool LagDetour_Init(const PlayerLagManager* lagManager, const double* pNetTime)
+{
+	s_LagManager = lagManager;
+	s_LagSystem = new LagSystem(pNetTime);
+	bool detoured = CreateNetLagPacketDetour();
+	if (!detoured) {
+		LagDetour_Shutdown();
+	}
+	return detoured;
+}
+
+void LagDetour_Shutdown() {
+	RemoveNetLagPacketDetour();
+	if (s_LagSystem != NULL)
+	{
+		delete s_LagSystem;
+	}
+	s_LagManager = NULL;
 }

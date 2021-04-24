@@ -37,3 +37,4 @@ Debug/
 *.vcxproj.user
 
 build/
+pkg/

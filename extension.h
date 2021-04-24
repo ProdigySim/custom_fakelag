@@ -37,8 +37,10 @@
  * @brief Sample extension code header.
  */
 
+#include <mathlib.h>
 #include "smsdk_ext.h"
 #include "CDetour/detours.h"
+#include "PlayerLagManager.h"
 
 /**
  * @brief Sample implementation of the SDK Extension.
@@ -46,6 +48,14 @@
  */
 class CustomFakelag : public SDKExtension
 {
+private:
+	PlayerLagManager * m_LagManager;
+
+public:
+	// Custom things for this plugin
+	void SetPlayerLatency(int client, float lagTime);
+	float GetPlayerLatency(int client);
+
 public:
 	/**
 	 * @brief This is called after the initial loading sequence has been processed.

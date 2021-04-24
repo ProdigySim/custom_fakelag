@@ -6,10 +6,19 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [ubuntu-latest, windows-latest]
-        sourcemod_version: [1.10-dev]
-        sdk: [l4d2]
-    runs-on: ${{ matrix.platform }}
+        include:
+        - os: ubuntu-latest
+          sourcemod_version: 1.10-dev
+          sdk: l4d2
+          cc: clang
+          cxx: clang++
+
+        - os: windows-latest
+          sourcemod_version: 1.10-dev
+          sdk: l4d2
+          cc: ""
+          cxx: ""
+    runs-on: ${{ matrix.os }}
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
@@ -68,13 +77,20 @@ jobs:
         if: runner.os == 'Windows'
         with:
           arch: x86
-      
+
+      - name: set cc and cxx variables
+        if: runner.os == 'Linux'
+        uses: allenevans/set-env@v2.0.0
+        with:
+          CC: clang
+          CXX: clang++
+
       - name: configure ambuild
         run: |
           cd src
           mkdir build
           cd build
-          python ../configure.py --sdks ${{ matrix.sdk }} --mms-path ../../mmsource-1.11
+          python ../configure.py --sdks ${{ matrix.sdk }} --mms-path ../../mmsource-1.11 --enable-optimize
               
       - name: build
         run: |
