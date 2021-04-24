@@ -1,13 +1,6 @@
 #ifndef _CUSTOM_FAKELAG_NET_STRUCTURES_H_
 #define _CUSTOM_FAKELAG_NET_STRUCTURES_H_
-
-typedef enum
-{
-    NA_NULL = 0,
-    NA_LOOPBACK,
-    NA_BROADCAST,
-    NA_IP,
-} netadrtype_t;
+#include <netadr.h>
 
 typedef struct dumb_netadr_s {
   netadrtype_t	type;
