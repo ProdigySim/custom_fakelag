@@ -5,8 +5,8 @@ public Plugin:myinfo =
 {
   name = "Per-Player Fakelag",
   author = "ProdigySim",
-  description = "Hey you little shit I hope you like getting lagged for no reason",
-  version = "any%",
+  description = "Set a custom fake latency per player",
+  version = "1.0",
   url = "https://github.com/ProdigySim/custom_fakelag"
 };
 
