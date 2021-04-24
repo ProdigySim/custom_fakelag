@@ -4,12 +4,19 @@
 #define _custom_fakelag_included
 
 /**
- * @brief Called whenever a packet is received in order to allow custom latency.
+ * @brief Set custom fake latency for the given player.
  *
- * @param lagTime Amount of time to lag the packet, in milliseconds..
- * @param ip		IP Address source of the packet
+ * @param client	Client index of the player to lag.
+ * @param lagTime Amount of time to lag the packet, in milliseconds.
  */
-forward void CustomLag_OnLagPacket(float & lagTime, int ip);
+ native void CFakeLag_SetPlayerLatency(int client, float lagTime);
+
+/**
+ * @brief Get custom fake latency amount for the given player.
+ *
+ * @param client	Client index of the player to check latency for.
+ */
+ native float CFakeLag_GetPlayerLatency(int client);
 
 
 public Extension __ext_custom_fakelag =

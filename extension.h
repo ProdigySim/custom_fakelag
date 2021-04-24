@@ -50,6 +50,12 @@ class CustomFakelag : public SDKExtension
 {
 private:
 	PlayerLagManager * m_LagManager;
+
+public:
+	// Custom things for this plugin
+	void SetPlayerLatency(int client, float lagTime);
+	float GetPlayerLatency(int client);
+
 public:
 	/**
 	 * @brief This is called after the initial loading sequence has been processed.

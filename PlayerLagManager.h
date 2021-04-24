@@ -9,12 +9,12 @@
 struct NetAdrHashPolicy_s {
 	static uint32_t hash(const netadr_t& value)
 	{
-		return reinterpret_cast<uint32_t>(value.ip);
+		return *(uint32_t*)value.ip;
 	}
 
 	static bool matches(const netadr_t& value, const netadr_t& key)
 	{
-		return value.ip == key.ip && value.port == key.port && value.type == key.type;
+		return *(uint32_t*)(value.ip) == *(uint32_t*)(key.ip) && value.port == key.port && value.type == key.type;
 	}
 };
 
@@ -27,7 +27,9 @@ private:
 	const netadr_t& GetClientNetAdr(int client) const;
 
 public:
-	PlayerLagManager(IVEngineServer* engine) : m_pEngine(engine) {}
+	PlayerLagManager(IVEngineServer* engine) : m_pEngine(engine) {
+		m_LagTimes.init(32);
+	}
 
 	void SetPlayerLag(int client, float lagTime);
 

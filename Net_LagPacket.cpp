@@ -3,7 +3,7 @@
 #include "Net_LagPacket.h"
 
 // uncomment for log statements
-//#include "extension.h"
+#include "extension.h"
 
 
 void LagSystem::LagPacket(_netpacket_t* pPacket, float lagTime)
@@ -27,18 +27,19 @@ bool LagSystem::GetNextPacket(int socket, _netpacket_t* destPacket)
 
 	// Is it time to process this packet?
 	if (packetQueue->peek().received > GetNetTime()) {
-		// g_pSM->LogError(myself, "Top packet is not due yet (%f > %f)", pTopPacket->received, getNetTime());
+		g_pSM->LogError(myself, "Top packet is not due yet (%f > %f)", packetQueue->peek().received, GetNetTime());
 		return false;
 	}
 
 	// It's time for this packet!
-	// g_pSM->LogError(myself, "It's time for a packet! (%f < %f)", pTopPacket->received, getNetTime());
+	g_pSM->LogError(myself, "It's time for a packet! (%f < %f)", packetQueue->peek().received, GetNetTime());
 
 	// Unlink the top packet from the list. (pop)
 	const _netpacket_t topPacket = packetQueue->popCopy();
 
 	// Copy the packet contents to the net packet.
-	destPacket->from = topPacket.from;
+	//memcpy(&destPacket->from, &topPacket.from, sizeof(netadr_t));
+	destPacket->from.ip = topPacket.from.ip;
 	destPacket->pNext = NULL;
 	destPacket->received = topPacket.received; // Custom: Keep same fake received time, instead of taking current net_time.
 	destPacket->size = topPacket.size;

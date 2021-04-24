@@ -3,9 +3,9 @@
 #include <netadr.h>
 
 struct dumb_netadr_s {
-	netadrtype_t	type;
-	unsigned char	ip[4];
-	unsigned short	port;
+  netadrtype_t	type;
+  unsigned char	ip[4];
+  unsigned short	port;
 };
 
 // I don't want to pull in all the bf_read code, since it has compile issues, and we ignore it.
@@ -29,6 +29,10 @@ struct fake_bf_read {
 // Copied from hl2sdk so we don't have to include all that junk
 typedef struct _netpacket_s 
 {
+  // !!!
+  // This netadr_t is INCORRECT!!!!!
+  // can I use a custom one instead???
+  // !!!!!!!
   netadr_t		from;		// sender IP
   int				source;		// received source 
   double			received;	// received time
@@ -42,6 +46,7 @@ typedef struct _netpacket_s
   _netpacket_s(const _netpacket_s& src) :
     from(src.from),
     source(src.source),
+    received(src.received),
     message(src.message),
     size(src.size),
     wiresize(src.wiresize),

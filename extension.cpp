@@ -34,8 +34,7 @@
 #include "Net_LagPacket.h"
 
 CustomFakelag g_Sample;		/**< Global singleton for extension's main interface */
-
-
+sp_nativeinfo_t g_CFakeLagNatives[];
 IGameConfig* g_pGameConf = NULL;
 
 bool CustomFakelag::SDK_OnLoad(char* error, size_t maxlen, bool late) 
@@ -69,6 +68,10 @@ bool CustomFakelag::SDK_OnLoad(char* error, size_t maxlen, bool late)
 		ke::SafeSprintf(error, maxlen, "Could not detour Net_LagPacket.");
 		return false;
 	}
+
+	
+	sharesys->AddNatives(myself, g_CFakeLagNatives);
+	sharesys->RegisterLibrary(myself, "custom_fakelag");
 	return true;
 }
 
@@ -84,5 +87,63 @@ void CustomFakelag::SDK_OnUnload() {
 	}
 	m_LagManager = NULL;
 }
+
+
+void CustomFakelag::SetPlayerLatency(int client, float lagTime)
+{
+	if (m_LagManager != NULL)
+	{
+		m_LagManager->SetPlayerLag(client, lagTime);
+	}
+}
+
+float CustomFakelag::GetPlayerLatency(int client)
+{
+	if(m_LagManager != NULL)
+	{
+		return m_LagManager->GetPlayerLag(client);
+	}
+}
+
+// native void CFakeLag_SetPlayerLatency(int client, float lagTime)
+cell_t CFakeLag_SetPlayerLatency(IPluginContext *pContext, const cell_t *params)
+{
+	int client = params[1];
+	float lagTime = sp_ctof(params[2]);
+	auto player = playerhelpers->GetGamePlayer(client);
+	if (player == NULL) {
+		return pContext->ThrowNativeError("Client index %d is not valid", client);
+	}
+
+	if(player->IsFakeClient())
+	{
+		return pContext->ThrowNativeError("Client index %d is a fake client and can't be lagged.", client);
+	}
+	g_Sample.SetPlayerLatency(client, lagTime);
+	return 1;
+
+}// native void CFakeLag_SetPlayerLatency(int client, float lagTime)
+cell_t CFakeLag_GetPlayerLatency(IPluginContext *pContext, const cell_t *params)
+{
+	int client = params[1];
+	auto player = playerhelpers->GetGamePlayer(client);
+	if (player == NULL) {
+		return pContext->ThrowNativeError("Client index %d is not valid", client);
+	}
+
+	if(player->IsFakeClient())
+	{
+		return pContext->ThrowNativeError("Client index %d is a fake client and can't be lagged.", client);
+	}
+	return sp_ftoc(g_Sample.GetPlayerLatency(client));
+}
+
+
+sp_nativeinfo_t g_CFakeLagNatives[] = 
+{
+	{"CFakeLag_SetPlayerLatency",			CFakeLag_SetPlayerLatency},
+	{"CFakeLag_GetPlayerLatency",			CFakeLag_GetPlayerLatency},
+	{NULL,							NULL}
+};
 
 SMEXT_LINK(&g_Sample);
