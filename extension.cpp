@@ -34,7 +34,7 @@
 #include "Net_LagPacket.h"
 
 CustomFakelag g_Sample;		/**< Global singleton for extension's main interface */
-sp_nativeinfo_t g_CFakeLagNatives[];
+extern sp_nativeinfo_t g_CFakeLagNatives[];
 IGameConfig* g_pGameConf = NULL;
 
 bool CustomFakelag::SDK_OnLoad(char* error, size_t maxlen, bool late) 
