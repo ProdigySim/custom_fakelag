@@ -6,5 +6,5 @@
 
 ```
 sm_fakelag <player> <ms> ; // Set additional latency to apply to a player's packets, in milliseconds.
-sm_printlag ; // Print fag latency amounts for all players
+sm_printlag ; // Print fake latency amounts for all players
 ```
