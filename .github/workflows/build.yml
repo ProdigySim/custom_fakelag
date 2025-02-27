@@ -12,6 +12,11 @@ jobs:
           sdk: l4d2
           cc: clang
           cxx: clang++
+        - os: ubuntu-latest
+          sourcemod_version: 1.10-dev
+          sdk: hl2dm
+          cc: clang
+          cxx: clang++
 
         - os: windows-latest
           sourcemod_version: 1.10-dev
