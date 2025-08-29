@@ -40,7 +40,7 @@
 #include <mathlib.h>
 #include <memory>
 #include "smsdk_ext.h"
-#include "CDetour/detours.h"
+#include <CDetour/detours.h>
 #include "PlayerLagManager.h"
 
 /**

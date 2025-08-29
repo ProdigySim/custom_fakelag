@@ -35,7 +35,7 @@ bool LagSystem::GetNextPacket(int socket, _netpacket_t* destPacket)
 	//g_pSM->LogError(myself, "It's time for a packet! (%f < %f)", packetQueue->peek().received, GetNetTime());
 
 	// Unlink the top packet from the list. (pop)
-	const _netpacket_t topPacket = packetQueue->popCopy();
+	const _netpacket_t topPacket = packetQueue->pop();
 
 	// Copy the packet contents to the net packet.
 	//memcpy(&destPacket->from, &topPacket.from, sizeof(netadr_t));
