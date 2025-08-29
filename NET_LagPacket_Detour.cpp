@@ -9,8 +9,8 @@ CDetour* DLagPacket = NULL;
 CDetour* DSendToImpl = NULL;
 CDetour* DClearQueuedPacketsForChannel = NULL;
 
-static const PlayerLagManager* s_LagManager;
-static LagSystem* s_LagSystem;
+static const PlayerLagManager* s_LagManager = nullptr;
+static LagSystem* s_LagSystem = nullptr;
 
 float getLagPacketMs(const dumb_netadr_s & adr)
 {
@@ -127,6 +127,7 @@ void LagDetour_Shutdown() {
 	if (s_LagSystem != NULL)
 	{
 		delete s_LagSystem;
+		s_LagSystem = NULL;
 	}
 	s_LagManager = NULL;
 }
