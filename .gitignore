@@ -39,3 +39,6 @@ Debug/
 build/
 pkg/
 /msvc12
+
+# We get a copy from SM
+safetyhook/
