@@ -27,7 +27,7 @@ jobs:
 
         - os: ubuntu-latest
           os_short: linux
-          sourcemod_version: 1.10-dev
+          sourcemod_version: 1.12-dev
           branch: l4d2-fork
           sdk: l4d2
           cc: clang
@@ -75,8 +75,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: alliedmodders/metamod-source
-          ref: 1.11-dev
-          path: 'mmsource-1.11'
+          ref: 1.12-dev
+          path: 'mmsource-1.12'
         
       - name: download ambuild
         uses: actions/checkout@v2
@@ -98,7 +98,7 @@ jobs:
           
       - name: install linux packages
         if: runner.os == 'Linux'
-        run: sudo apt update && sudo apt install -y --no-install-recommends gcc-multilib g++-multilib
+        run: sudo apt update && sudo apt install -y --no-install-recommends gcc-multilib g++-multilib clang
         
       - uses: ilammy/msvc-dev-cmd@v1
         if: runner.os == 'Windows'
@@ -117,7 +117,14 @@ jobs:
           cd src
           mkdir build
           cd build
-          python ../configure.py --sdks ${{ matrix.sdk }} --mms-path ../../mmsource-1.11 --enable-optimize
+          python ../configure.py \
+          --hl2sdk-root="$GITHUB_WORKSPACE" \
+          --hl2sdk-manifest-path="$GITHUB_WORKSPACE/sourcemod/hl2sdk-manifests" \
+          --sdks ${{ matrix.sdk }} \
+          --sm-path="$GITHUB_WORKSPACE/sourcemod" \
+          --mms-path="$GITHUB_WORKSPACE/mmsource-1.12" \
+          --targets=x86 \
+          --enable-optimize
               
       - name: build
         run: |
